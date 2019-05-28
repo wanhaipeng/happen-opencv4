@@ -1,8 +1,9 @@
-set(OpenCV_DIR /Users/wanhaipeng/Work/FrameWork/OpenCV/opencv-4.1.0/build/opencv4.1/lib/cmake/opencv4/) # opencv4 build path
-find_package(OpenCV 4 REQUIRED)
-if(OpenCV_FOUND)
-    message(STATUS "OpenCV4_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
-    message(STATUS "OpenCV4_LIBRARIES    = ${OpenCV_LIBRARIES}")
-else()
-    message(FATAL_ERROR "OpenCV4 Not Found!")
-endif()
+# set(OpenCV_DIR /Users/wanhaipeng/Work/FrameWork/OpenCV/opencv-4.1.0/build/opencv4.1/lib/cmake/opencv4/) # opencv4 build path
+# find_package(OpenCV 4 REQUIRED)
+# if(OpenCV_FOUND)
+#     message(STATUS "OpenCV4_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
+#     message(STATUS "OpenCV4_LIBRARIES    = ${OpenCV_LIBRARIES}")
+# else()
+#     message(FATAL_ERROR "OpenCV4 Not Found!")
+# endif()
+pybind11_add_module(pybindings bindings.cpp)
