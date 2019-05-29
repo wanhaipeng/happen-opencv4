@@ -1,6 +1,7 @@
 import sys, os
 sys.path.insert(0, '../build/lib')
 import pybindings
+print(pybindings.__doc__)
 # Use the add function
 print("1 + 2 = {}".format(pybindings.add(1, 2)))
 
