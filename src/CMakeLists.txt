@@ -7,3 +7,4 @@
 #     message(FATAL_ERROR "OpenCV4 Not Found!")
 # endif()
 pybind11_add_module(pybindings bindings.cpp)
+pybind11_add_module(bind_struct bind_struct.cpp)
