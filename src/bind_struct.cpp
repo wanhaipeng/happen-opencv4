@@ -18,13 +18,16 @@ typedef struct Runtime {
   int status;
 }runtime;
 
-void fill_tensor(tensor* input_tensor, std::vector<int>& data) {
+void fill_tensor(tensor* input_tensor, std::vector<int>& data, bool flag) {
   input_tensor->shape.push_back(data[0]);
   input_tensor->shape.push_back(data[1]);
   input_tensor->shape.push_back(data[2]);
   input_tensor->shape.push_back(data[3]);
 }
 
+std::vector<int>& test_return(std::vector<int>& data) {
+  return data;
+}
 // define a module to be imported by python
 PYBIND11_MODULE(bind_struct, mymodule) {
   using namespace pybind11::literals; // for _a literal to define arguments
@@ -42,5 +45,6 @@ PYBIND11_MODULE(bind_struct, mymodule) {
         [](const runtime &a) {
           return "<bind_struct.runtime status '" + std::to_string(a.status) + "'>";
         });
-  mymodule.def("fill_tensor", &fill_tensor, "fill tensor shape", "input_tensor"_a, "data"_a);
+  mymodule.def("fill_tensor", &fill_tensor, "fill tensor shape", "input_tensor"_a, "data"_a, "flag"_a);
+  mymodule.def("test_return", &test_return, py::return_value_policy::reference);
 }
