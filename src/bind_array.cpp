@@ -32,15 +32,18 @@ py::array_t<Dtype> test_array_2d(py::array_t<Dtype>& input1) {
     return result;
 }
 
-std::vector<py::ssize_t> ndarray_to_tensor(py::array_t<Dtype>& input) {
+std::vector<int> ndarray_to_tensor(py::array_t<Dtype>& input, py::list& output) {
     py::buffer_info input_buf = input.request();
     if (input_buf.ndim < 1) {
         throw std::runtime_error("numpy.ndarray dims not valid");
     }
     // get shape from ndarray
-    std::vector<py::ssize_t> input_shape = input_buf.shape;
+    std::vector<int> input_shape;
+    for (auto it_shape : input_buf.shape) {
+        input_shape.push_back((int)it_shape);
+    }
     Dtype* ptr = (Dtype*)input_buf.ptr;
-    ptr[0] = 2.0;
+    output.append(0.0);
     return input_shape;
 }
 
