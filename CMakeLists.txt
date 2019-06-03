@@ -12,8 +12,10 @@ if(OpenCV_FOUND)
     message(STATUS "OpenCV4_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
     message(STATUS "OpenCV4_LIBRARIES    = ${OpenCV_LIBRARIES}")
 endif()
-add_subdirectory(src)
 include_directories(${CMAKE_SOURCE_DIR}/include
-                    ${OpenCV_INCLUDE_DIRS})
+                    ${OpenCV_INCLUDE_DIRS}
+                    ${PYBIND11_INCLUDE_DIR}
+                    ${PYTHON_INCLUDE_DIRS})
+add_subdirectory(src)
 link_libraries(${OpenCV_LIBRARIES})
 add_executable(run_img tools/run_open.cpp)

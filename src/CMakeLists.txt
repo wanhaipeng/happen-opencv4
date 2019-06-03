@@ -8,3 +8,4 @@
 # endif()
 pybind11_add_module(pybindings bindings.cpp)
 pybind11_add_module(bind_struct bind_struct.cpp)
+pybind11_add_module(bind_array bind_array.cpp)
