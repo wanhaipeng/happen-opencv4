@@ -7,8 +7,8 @@ c = [1.0, 3.0]
 a = np.array([[1,2],[3,4]], dtype=np.float32)
 b = bind_array.ndarray_to_tensor(a,c)
 
-# bind_array.set_list(c)
-print(c)
+d = bind_array.tensor_to_ndarray([1,2,3], [1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
+# print(d, d.shape)
 
-print(b)
-print(a)
+a_dict = {'one': np.ones((1,2)), 'zero': np.zeros((1,2))}
+bind_array.test_dict(a_dict)

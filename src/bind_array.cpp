@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <numeric>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/stl_bind.h>
@@ -51,6 +52,47 @@ void set_list(py::list& input) {
     input[0] = 10.0;
 }
 
+py::array_t<Dtype> tensor_to_ndarray(std::vector<int> input_shape, std::vector<Dtype> input_data) {
+    if (input_shape.size() < 1) {
+        throw std::runtime_error("input shape not valid");
+    }
+    // fill numpy array
+    void* ptr = (void*)input_data.data();
+    py::ssize_t itemsize = sizeof(Dtype);
+    std::string format = py::format_descriptor<Dtype>::format();
+    py::ssize_t ndim = input_shape.size();
+    std::vector<py::ssize_t> shape;
+    for (auto it : input_shape) {
+        shape.push_back(it);
+    }
+    std::vector<py::ssize_t> stride;
+    for (int i = 1 ; i < input_shape.size(); i++) {
+        py::ssize_t inner_stride =
+            std::accumulate(shape.begin() + i, shape.end(), sizeof(Dtype), std::multiplies<py::ssize_t>());
+        stride.push_back(inner_stride);
+    }
+    stride.push_back(sizeof(Dtype));
+    py::buffer_info output_buf(
+        ptr,
+        itemsize,
+        format,
+        ndim,
+        shape,
+        stride
+    );
+    return py::array_t<Dtype>(output_buf);
+}
+
+void test_dict(py::dict& input_dict) {
+    for (auto it : input_dict) {
+        std::cout << it.first << std::endl;
+        // std::cout << it.second.ptr() << std::endl;
+        const py::handle h = it.second.inc_ref();
+        py::array_t<Dtype> inner_array = py::array_t<Dtype>::ensure(h);
+        py::print(inner_array);
+    }
+}
+
 // define a module to be imported by python
 PYBIND11_MODULE(bind_array, mymodule) {
   using namespace pybind11::literals; // for _a literal to define arguments
@@ -58,4 +100,6 @@ PYBIND11_MODULE(bind_array, mymodule) {
   mymodule.def("test_array_2d", &test_array_2d);
   mymodule.def("ndarray_to_tensor", &ndarray_to_tensor);
   mymodule.def("set_list", &set_list);
+  mymodule.def("tensor_to_ndarray", &tensor_to_ndarray);
+  mymodule.def("test_dict", &test_dict);
 }
