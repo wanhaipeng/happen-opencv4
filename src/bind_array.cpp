@@ -88,7 +88,8 @@ void test_dict(py::dict& input_dict) {
         std::cout << it.first << std::endl;
         // std::cout << it.second.ptr() << std::endl;
         const py::handle h = it.second.inc_ref();
-        py::array_t<Dtype> inner_array = py::array_t<Dtype>::ensure(h);
+        // py::array_t<Dtype> inner_array = py::array_t<Dtype>::ensure(h);
+        py::array_t<Dtype> inner_array = py::array_t<Dtype>::ensure(it.second);
         py::print(inner_array);
     }
 }
